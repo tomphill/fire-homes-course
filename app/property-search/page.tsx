@@ -8,6 +8,11 @@ import { BathIcon, BedIcon, HomeIcon } from "lucide-react";
 import numeral from "numeral";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import ToggleFavouriteButton from "./toggle-favourite-button";
+import { getUserFavourites } from "@/data/favourites";
+import { cookies } from "next/headers";
+import { auth } from "@/firebase/server";
+import { DecodedIdToken } from "firebase-admin/auth";
 
 export default async function PropertySearch({
   searchParams,
@@ -39,6 +44,18 @@ export default async function PropertySearch({
     },
   });
 
+  const userFavourites = await getUserFavourites();
+
+  console.log({ userFavourites });
+
+  const cookieStore = await cookies();
+  const token = cookieStore.get("firebaseAuthToken")?.value;
+  let verifiedToken: DecodedIdToken | null;
+
+  if (token) {
+    verifiedToken = await auth.verifyIdToken(token);
+  }
+
   return (
     <div className="max-w-screen-lg mx-auto">
       <h1 className="text-4xl font-bold p-5">Property Search</h1>
@@ -66,6 +83,12 @@ export default async function PropertySearch({
             <Card key={property.id} className="overflow-hidden">
               <CardContent className="px-0 pb-0">
                 <div className="h-40 relative bg-sky-50 text-zinc-400 flex flex-col justify-center items-center">
+                  {(!verifiedToken || !verifiedToken.admin) && (
+                    <ToggleFavouriteButton
+                      isFavourite={userFavourites[property.id]}
+                      propertyId={property.id}
+                    />
+                  )}
                   {!!property.images?.[0] && (
                     <Image
                       fill
