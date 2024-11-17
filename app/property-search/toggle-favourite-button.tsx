@@ -22,6 +22,7 @@ export default function ToggleFavouriteButton({
       onClick={async () => {
         const tokenResult = await auth?.currentUser?.getIdTokenResult();
         if (!tokenResult) {
+          router.push("/login");
           return;
         }
         if (isFavourite) {
