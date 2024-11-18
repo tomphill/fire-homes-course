@@ -33,7 +33,7 @@ export default async function MyFavourites({
     page * pageSize
   );
 
-  if (!paginatedFavourites && page !== 1) {
+  if (!paginatedFavourites.length && page > 1) {
     redirect(`/account/my-favourites?page=${totalPages}`);
   }
 
