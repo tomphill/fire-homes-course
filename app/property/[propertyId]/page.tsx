@@ -1,5 +1,4 @@
 import PropertyStatusBadge from "@/components/property-status-badge";
-import { Button } from "@/components/ui/button";
 import {
   Carousel,
   CarouselContent,
@@ -17,8 +16,6 @@ import BackButton from "./back-button";
 export default async function Property({ params }: { params: Promise<any> }) {
   const paramsValue = await params;
   const property = await getPropertyById(paramsValue.propertyId);
-
-  console.log({ property });
 
   const addressLines = [
     property.address1,
