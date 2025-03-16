@@ -26,7 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.className} antialiased`}>
         <AuthProvider>
-          <nav className="bg-sky-950 text-white p-5 h-24 flex items-center justify-between">
+          <nav className="bg-sky-950 text-white p-5 h-24 flex items-center justify-between z-10 relative">
             <Link
               href="/"
               className="text-3xl tracking-widest flex gap-2 items-center uppercase"
