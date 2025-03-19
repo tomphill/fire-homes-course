@@ -6,14 +6,13 @@ import { PlusCircleIcon } from "lucide-react";
 import { z } from "zod";
 import { createProperty } from "./actions";
 import { savePropertyImages } from "../actions";
-import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { ref, uploadBytesResumable, UploadTask } from "firebase/storage";
 import { storage } from "@/firebase/client";
+import { toast } from "sonner";
 
 export default function NewPropertyForm() {
   const auth = useAuth();
-  const { toast } = useToast();
   const router = useRouter();
 
   const handleSubmit = async (data: z.infer<typeof propertySchema>) => {
@@ -26,10 +25,8 @@ export default function NewPropertyForm() {
     const response = await createProperty(rest, token);
 
     if (!!response.error || !response.propertyId) {
-      toast({
-        title: "Error!",
+      toast.error("Error!", {
         description: response.message,
-        variant: "destructive",
       });
       return;
     }
@@ -53,10 +50,8 @@ export default function NewPropertyForm() {
       token
     );
 
-    toast({
-      title: "Success!",
+    toast.success("Success!", {
       description: "Property created",
-      variant: "success",
     });
 
     router.push("/admin-dashboard");

@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { removeToken } from "@/context/actions";
 import { useAuth } from "@/context/auth";
-import { useToast } from "@/hooks/use-toast";
 import {
   deleteUser,
   EmailAuthProvider,
@@ -24,10 +23,10 @@ import {
 } from "firebase/auth";
 import { useState } from "react";
 import { deleteUserFavourites } from "./actions";
+import { toast } from "sonner";
 
 export default function DeleteAccountButton() {
   const auth = useAuth();
-  const { toast } = useToast();
   const [isDeleting, setIsDeleting] = useState(false);
   const [password, setPassword] = useState("");
 
@@ -42,18 +41,13 @@ export default function DeleteAccountButton() {
         await deleteUserFavourites();
         await deleteUser(auth.currentUser);
         await removeToken();
-        toast({
-          title: "Your account was deleted successfully",
-          variant: "success",
-        });
+        toast.success("Your account was deleted successfully");
       } catch (e: any) {
-        toast({
-          title:
-            e.code === "auth/invalid-credential"
-              ? "Your current password is incorrect"
-              : "An error occurred",
-          variant: "destructive",
-        });
+        toast.error(
+          e.code === "auth/invalid-credential"
+            ? "Your current password is incorrect"
+            : "An error occurred"
+        );
       }
       setIsDeleting(false);
     }

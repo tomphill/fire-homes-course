@@ -16,11 +16,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { registerUser } from "./actions";
-import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function RegisterForm() {
-  const { toast } = useToast();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof registerUserSchema>>({
@@ -37,18 +36,14 @@ export default function RegisterForm() {
     const response = await registerUser(data);
 
     if (!!response?.error) {
-      toast({
-        title: "Error!",
+      toast.error("Error!", {
         description: response.message,
-        variant: "destructive",
       });
       return;
     }
 
-    toast({
-      title: "Success!",
+    toast.success("Success!", {
       description: "Your account was created successfully!",
-      variant: "success",
     });
 
     router.push("/login");

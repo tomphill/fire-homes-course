@@ -3,9 +3,9 @@
 import { removeFavourite } from "@/app/property-search/actions";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth";
-import { useToast } from "@/hooks/use-toast";
 import { Trash2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function RemoveFavouriteButton({
   propertyId,
@@ -13,7 +13,6 @@ export default function RemoveFavouriteButton({
   propertyId: string;
 }) {
   const auth = useAuth();
-  const { toast } = useToast();
   const router = useRouter();
   return (
     <Button
@@ -24,10 +23,7 @@ export default function RemoveFavouriteButton({
           return;
         }
         await removeFavourite(propertyId, tokenResult.token);
-        toast({
-          title: "Property removed from favourites",
-          variant: "success",
-        });
+        toast.success("Property removed from favourites");
         router.refresh();
       }}
     >

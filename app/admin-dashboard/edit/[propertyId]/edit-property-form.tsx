@@ -8,7 +8,6 @@ import { SaveIcon } from "lucide-react";
 import { z } from "zod";
 import { updateProperty } from "./actions";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
 import {
   deleteObject,
   ref,
@@ -16,6 +15,7 @@ import {
   UploadTask,
 } from "firebase/storage";
 import { savePropertyImages } from "../../actions";
+import { toast } from "sonner";
 
 type Props = Property;
 
@@ -33,7 +33,6 @@ export default function EditPropertyForm({
   images = [],
 }: Props) {
   const router = useRouter();
-  const { toast } = useToast();
 
   const handleSubmit = async (data: z.infer<typeof propertySchema>) => {
     const token = await auth?.currentUser?.getIdToken();
@@ -47,10 +46,8 @@ export default function EditPropertyForm({
     const response = await updateProperty({ ...rest, id }, token);
 
     if (!!response?.error) {
-      toast({
-        title: "Error!",
+      toast.error("Error!", {
         description: response.message,
-        variant: "destructive",
       });
       return;
     }
@@ -81,10 +78,8 @@ export default function EditPropertyForm({
     await Promise.all(storageTasks);
     await savePropertyImages({ propertyId: id, images: paths }, token);
 
-    toast({
-      title: "Success!",
+    toast.success("Success!", {
       description: "Property updated",
-      variant: "success",
     });
     router.push("/admin-dashboard");
   };

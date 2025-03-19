@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/auth";
-import { useToast } from "@/hooks/use-toast";
 import { passwordValidation } from "@/validation/registerUser";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -20,6 +19,7 @@ import {
   updatePassword,
 } from "firebase/auth";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z
@@ -39,7 +39,6 @@ const formSchema = z
   });
 
 export default function UpdatePasswordForm() {
-  const { toast } = useToast();
   const auth = useAuth();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -62,20 +61,15 @@ export default function UpdatePasswordForm() {
         EmailAuthProvider.credential(user.email, data.currentPassword)
       );
       await updatePassword(user, data.newPassword);
-      toast({
-        title: "Password updated successfully",
-        variant: "success",
-      });
+      toast.success("Password updated successfully");
       form.reset();
     } catch (e: any) {
       console.log({ e });
-      toast({
-        title:
-          e.code === "auth/invalid-credential"
-            ? "Your current password is incorrect"
-            : "An error occurred",
-        variant: "destructive",
-      });
+      toast(
+        e.code === "auth/invalid-credential"
+          ? "Your current password is incorrect"
+          : "An error occurred"
+      );
     }
   };
 

@@ -11,11 +11,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/auth";
-import { useToast } from "@/hooks/use-toast";
 import { passwordValidation } from "@/validation/registerUser";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -24,7 +24,6 @@ const formSchema = z.object({
 });
 
 export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
-  const { toast } = useToast();
   const auth = useAuth();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,13 +38,11 @@ export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
       await auth?.loginWithEmail(data.email, data.password);
       onSuccess?.();
     } catch (e: any) {
-      toast({
-        title: "Error!",
+      toast.error("Error!", {
         description:
           e.code === "auth/invalid-credential"
             ? "Incorrect credentials"
             : "An error occurred",
-        variant: "destructive",
       });
     }
   };

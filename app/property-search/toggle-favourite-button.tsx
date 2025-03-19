@@ -4,7 +4,7 @@ import { HeartIcon } from "lucide-react";
 import { addFavourite, removeFavourite } from "./actions";
 import { useAuth } from "@/context/auth";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 export default function ToggleFavouriteButton({
   propertyId,
@@ -13,7 +13,6 @@ export default function ToggleFavouriteButton({
   propertyId: string;
   isFavourite: boolean;
 }) {
-  const { toast } = useToast();
   const auth = useAuth();
   const router = useRouter();
   return (
@@ -31,12 +30,9 @@ export default function ToggleFavouriteButton({
           await addFavourite(propertyId, tokenResult.token);
         }
 
-        toast({
-          title: `Property ${
-            isFavourite ? "removed from" : "added to"
-          } favourites`,
-          variant: "success",
-        });
+        toast.success(
+          `Property ${isFavourite ? "removed from" : "added to"} favourites`
+        );
 
         router.refresh();
       }}
