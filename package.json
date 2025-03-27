@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@hello-pangea/dnd": "^17.0.0",
+    "@hello-pangea/dnd": "^18.0.1",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-alert-dialog": "^1.1.2",
     "@radix-ui/react-avatar": "^1.1.1",
@@ -30,8 +30,8 @@
     "next": "15.2.3",
     "next-themes": "^0.4.6",
     "numeral": "^2.0.6",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^19",
+    "react-dom": "^19",
     "react-hook-form": "^7.53.1",
     "react-markdown": "^9.0.1",
     "sonner": "^2.0.1",
@@ -42,10 +42,10 @@
   "devDependencies": {
     "@types/node": "^20",
     "@types/numeral": "^2.0.5",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
     "eslint": "^8",
-    "eslint-config-next": "15.0.1",
+    "eslint-config-next": "15.2.3",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
